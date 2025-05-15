@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const express = require('express');
 const app = express();
@@ -47,6 +47,21 @@ async function run() {
       res.send(result)
     })
 
+    // Get one
+    app.get('/coffees/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await coffeeCollection.findOne(query);
+      res.send(result)
+    } )
+
+    // Delete
+    app.delete("/coffees/:id", async (req, res) => {
+      const id = req.params.id;  
+      const query = { _id: new ObjectId(id) };
+      const result = await coffeeCollection.deleteOne(query);
+      res.send(result)
+    } )
 
 
 
