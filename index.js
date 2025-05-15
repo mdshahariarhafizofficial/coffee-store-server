@@ -28,6 +28,8 @@ async function run() {
     const database = client.db("coffeeDB");
     const coffeeCollection = database.collection("coffees");
 
+    // -------------- CRUD Operation --------------
+
     // Post
     app.post('/coffees', async(req, res) => {
       const newCoffee = req.body;
@@ -35,6 +37,19 @@ async function run() {
       const result = await coffeeCollection.insertOne(newCoffee);
       res.send(result)
     })
+
+    // Get
+    app.get('/coffees', async (req, res)=>{
+      // const cursor = coffeeCollection.find();      
+      // const result = await cursor.toArray();
+      // res.send(result)
+      const result = await coffeeCollection.find().toArray();
+      res.send(result)
+    })
+
+
+
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
