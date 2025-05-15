@@ -63,7 +63,18 @@ async function run() {
       res.send(result)
     } )
 
-
+    // Update 
+    app.put('/coffees/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateCoffee = req.body;
+      const updateDoc = {
+        $set: updateCoffee
+      };
+      const result = await coffeeCollection.updateOne(filter, updateDoc, options);
+      res.send(result);
+    } )
 
 
     // Send a ping to confirm a successful connection
