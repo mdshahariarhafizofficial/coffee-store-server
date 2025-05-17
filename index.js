@@ -27,6 +27,7 @@ async function run() {
     await client.connect();
     const database = client.db("coffeeDB");
     const coffeeCollection = database.collection("coffees");
+    const userCollection = database.collection('users')
 
     // -------------- CRUD Operation --------------
 
@@ -37,6 +38,14 @@ async function run() {
       const result = await coffeeCollection.insertOne(newCoffee);
       res.send(result)
     })
+
+    // User post
+    app.post('/users', async (req, res) => {
+      const userInfo = req.body;
+      console.log("New user : ", userInfo);
+      const result = await userCollection.insertOne(userInfo);
+      res.send(result);
+    } )
 
     // Get
     app.get('/coffees', async (req, res)=>{
@@ -54,6 +63,13 @@ async function run() {
       const result = await coffeeCollection.findOne(query);
       res.send(result)
     } )
+
+    // Get user
+    app.get('/users', async (req, res) => {
+      const cursor = userCollection.find();
+      const result = await cursor.toArray();
+      res.send(result)
+    })
 
     // Delete
     app.delete("/coffees/:id", async (req, res) => {
